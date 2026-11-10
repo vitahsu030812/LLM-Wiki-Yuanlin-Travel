@@ -1,0 +1,733 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>員林其實很年輕</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@300;400;700&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<style>
+/* 風格：文青手帳 × 日式極簡（規格見 slides/README.md） */
+:root{
+  --paper:#F5F2EB;--paper-2:#ECE6DA;--kraft:#C8B796;
+  --ink:#34322E;--ink-2:#6F6A61;--ink-3:#A39D92;--line:#D9D2C4;
+  --accent:#8E3B32;--accent-soft:#EBDDD6;
+  --hand:"LXGW WenKai TC","Kaiti TC","DFKai-SB","標楷體",serif;
+  --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#E4DED2;overflow:hidden}
+body{font-family:var(--sans);color:var(--ink);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+#stage{position:fixed;inset:0}
+#deck{width:1600px;height:900px;position:absolute;left:50%;top:50%;transform-origin:center center}
+.slide{position:absolute;inset:0;padding:90px 120px 110px;
+  background:radial-gradient(circle, rgba(52,50,46,.09) 1.1px, transparent 1.3px) 0 0/28px 28px, var(--paper);
+  opacity:0;visibility:hidden;transition:opacity .45s ease;box-shadow:0 20px 60px rgba(60,50,30,.12);
+  display:flex;flex-direction:column}
+.slide.active{opacity:1;visibility:visible}
+.slide.plain{background:var(--paper)}
+
+.topbar{display:flex;justify-content:space-between;align-items:center}
+.kicker{font-size:16px;letter-spacing:.32em;color:var(--ink-3);text-transform:uppercase}
+.kicker b{font-weight:400;color:var(--accent);margin-right:14px;letter-spacing:.2em}
+.home-btn{font-size:15px;letter-spacing:.16em;color:var(--ink-2);border:1px solid var(--line);padding:8px 18px;border-radius:2px;background:rgba(255,255,255,.35)}
+.home-btn:hover{color:var(--accent);border-color:var(--accent)}
+.foot{position:absolute;left:120px;right:120px;bottom:48px;display:flex;justify-content:space-between;
+  font-size:15px;letter-spacing:.18em;color:var(--ink-3);border-top:1px solid var(--line);padding-top:14px}
+.foot b{font-weight:400;color:var(--ink-2)}
+h1,h2{font-family:var(--hand);font-weight:400;color:var(--ink)}
+h2{font-size:56px;line-height:1.25;margin:12px 0 6px}
+.lead{font-size:24px;line-height:1.8;color:var(--ink-2);font-weight:300}
+.src{font-size:14px;color:var(--ink-3);letter-spacing:.04em}
+.brush{display:block;width:100%;height:18px;color:var(--accent)}
+.tape{position:absolute;width:110px;height:28px;background:rgba(200,183,150,.55);top:-13px;left:50%;
+  transform:translateX(-50%) rotate(-3deg);border-left:1px dashed rgba(255,255,255,.5);border-right:1px dashed rgba(255,255,255,.5)}
+.mascot{position:absolute;filter:saturate(.8);pointer-events:none}
+
+/* 延伸閱讀 */
+.more{margin-top:auto;display:flex;align-items:center;flex-wrap:wrap;gap:10px;font-size:16px;color:var(--ink-3);letter-spacing:.12em}
+.more button{font-size:15px;letter-spacing:.06em;color:var(--accent);border:1px solid var(--accent-soft);background:#FBF9F4;padding:4px 11px;border-radius:2px}
+.more button:hover{border-color:var(--accent)}
+.more .what{letter-spacing:.04em;color:var(--ink-2);margin:0 10px 0 2px}
+
+/* 封面 */
+.cover{justify-content:center}
+.cover .vline{position:absolute;left:120px;top:96px;bottom:110px;width:1px;background:var(--line)}
+.cover .inner{padding-left:64px}
+.cover h1{font-size:132px;line-height:1.1;letter-spacing:.04em;margin:28px 0 6px}
+.cover h1 .brush{width:640px;height:26px;margin-top:-6px}
+.cover .lead{font-size:28px;margin-top:30px}
+.enter{margin-top:44px;font-size:20px;letter-spacing:.2em;color:var(--accent);border-bottom:1px solid var(--accent);padding-bottom:6px}
+.stamp{position:absolute;right:150px;top:110px;width:112px;height:112px;border:1.5px solid var(--accent);border-radius:50%;
+  display:grid;place-items:center;color:var(--accent);font-family:var(--hand);font-size:22px;line-height:1.2;text-align:center;transform:rotate(-8deg);opacity:.85}
+.cover .mascot{right:170px;bottom:120px;width:250px}
+
+/* 主頁 */
+.home h2{margin-bottom:0}
+.home .mascot{right:130px;top:58px;width:105px}
+.row{margin-top:20px}
+.row-label{font-size:14px;letter-spacing:.28em;color:var(--ink-3);margin-bottom:8px}
+.row-label b{font-weight:400;color:var(--accent);margin-right:10px}
+.tiles{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.tile{text-align:left;position:relative;background:#FBF9F4;border:1px solid var(--line);padding:16px 20px 14px;height:112px;
+  display:flex;flex-direction:column;transition:border-color .2s, transform .2s}
+.tile:hover{border-color:var(--accent);transform:translateY(-2px)}
+.tile h3{font-family:var(--hand);font-weight:400;font-size:30px;line-height:1.2}
+.tile p{font-size:15px;color:var(--ink-2);font-weight:300;margin-top:6px}
+.tile .arrow{position:absolute;right:16px;top:16px;font-size:16px;color:var(--ink-3)}
+.tile:hover .arrow{color:var(--accent)}
+.tile .badge{position:absolute;right:14px;bottom:12px;font-size:12px;letter-spacing:.12em;color:var(--ink-3);border:1px solid var(--line);padding:1px 7px}
+.tile.reserved{background:rgba(251,249,244,.55);border-style:dashed}
+.tile.reserved h3{color:var(--ink-2)}
+.tile.empty{background:transparent;border:1px dashed var(--line);cursor:default;align-items:center;justify-content:center;color:var(--ink-3)}
+.tile.empty:hover{transform:none;border-color:var(--line)}
+.tile.empty span{font-size:28px;font-weight:300;line-height:1}
+.tile.empty small{font-size:13px;letter-spacing:.16em;margin-top:6px}
+.home .foot span{font-family:var(--hand);font-size:22px;letter-spacing:.08em;color:var(--ink-2)}
+
+/* 預留頁 */
+.reserve-box{margin-top:40px;border:1.5px dashed var(--kraft);background:rgba(251,249,244,.6);padding:40px 48px;flex:1;display:flex;flex-direction:column}
+.reserve-box .tag{font-size:15px;letter-spacing:.28em;color:var(--accent)}
+.reserve-box h3{font-family:var(--hand);font-weight:400;font-size:40px;margin:12px 0 8px}
+.reserve-box p{font-size:19px;color:var(--ink-2);font-weight:300;line-height:1.8}
+.reflist{margin-top:22px;display:grid;grid-template-columns:1fr 1fr;gap:10px 30px;border-top:1px solid var(--line);padding-top:18px}
+.reflist button{display:flex;gap:12px;text-align:left;font-size:17px;line-height:1.5;padding:6px 0;color:var(--ink)}
+.reflist button b{font-weight:400;color:var(--accent);min-width:42px}
+.reflist button span{border-bottom:1px solid transparent;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+.reflist button:hover span{border-color:var(--kraft)}
+
+/* 咖啡廳小卡 */
+.mini{display:grid;grid-template-columns:repeat(3,1fr);gap:14px 22px;margin-top:24px}
+.mcard{background:#FBF9F4;border:1px solid var(--line);padding:14px 22px 12px;height:158px;display:flex;flex-direction:column}
+.mcard .tag{font-size:13px;letter-spacing:.12em;color:var(--accent)}
+.mcard h3{font-family:var(--hand);font-weight:400;font-size:27px;margin:2px 0 4px}
+.mcard .must{font-size:16px;line-height:1.5}
+.mcard .hrs{font-size:14px;color:var(--ink-2);margin-top:2px}
+.mcard .src{margin-top:auto;font-size:12px}
+.mcard{position:relative}
+.mcard .xb{position:absolute;right:14px;top:12px;font-size:12px;letter-spacing:.1em;color:var(--accent);border:1px solid var(--accent);padding:0 7px}
+.mcard.slot{border:1.5px dashed var(--kraft);background:transparent;align-items:center;justify-content:center;color:var(--ink-3)}
+.mcard.slot span{font-size:26px;font-weight:300}
+.mcard.slot small{font-size:13px;letter-spacing:.14em;margin-top:4px}
+.mcard.paused{background:rgba(251,249,244,.5);border-style:dashed}
+.mcard.paused h3,.mcard.paused .must{color:var(--ink-3)}
+.ref .tags span.done{border-color:#9bb29a;color:#4f6b4e;background:rgba(155,178,154,.15)}
+
+/* 卡片 */
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:30px;margin-top:46px}
+.card{position:relative;background:#FBF9F4;border:1px solid var(--line);padding:38px 28px 22px;min-height:390px;display:flex;flex-direction:column}
+.card:nth-child(even) .tape{transform:translateX(-50%) rotate(2deg)}
+.card .tag{font-size:14px;letter-spacing:.14em;color:var(--accent)}
+.card h3{font-family:var(--hand);font-weight:400;font-size:34px;margin:10px 0 16px;line-height:1.25}
+.card dl{display:grid;grid-template-columns:52px 1fr;row-gap:12px;font-size:17px;line-height:1.6}
+.card dt{color:var(--ink-3);font-size:14px;letter-spacing:.1em;padding-top:2px}
+.card .src{margin-top:auto;padding-top:16px;border-top:1px dashed var(--line);font-size:13px}
+
+/* 表格 */
+table{width:100%;border-collapse:collapse;margin-top:30px;font-size:21px}
+th{font-weight:400;font-size:15px;letter-spacing:.2em;color:var(--ink-3);text-align:left;padding:0 18px 12px;border-bottom:1px solid var(--ink)}
+td{padding:16px 18px;border-bottom:1px solid var(--line);vertical-align:top}
+td.name{font-family:var(--hand);font-size:28px;width:24%}
+td.price{color:var(--accent);font-size:24px;white-space:nowrap}
+td.src{font-size:14px}
+.sum{margin-top:16px;font-size:22px;color:var(--ink-2)}
+
+/* 毛孩 */
+.pets{display:grid;grid-template-columns:420px 1fr;gap:80px;margin-top:50px;align-items:start}
+.pets .big{font-size:64px;color:var(--accent);padding:30px 0;border-top:1px solid var(--ink);border-bottom:1px solid var(--line)}
+.pets .big p{font-size:20px;color:var(--ink-2);margin-top:10px;font-weight:300}
+.names{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--ink)}
+.names span{font-family:var(--hand);font-size:28px;padding:22px 6px;border-bottom:1px solid var(--line)}
+.names span i{font-style:normal;font-family:var(--sans);font-size:14px;color:var(--accent);margin-left:8px;letter-spacing:.1em}
+
+/* 時間軸 */
+.timeline{position:relative;margin:60px 0 0;display:grid;grid-template-columns:repeat(6,1fr);gap:22px;padding-right:40px}
+.timeline:before{content:"";position:absolute;left:0;right:40px;top:15px;border-top:1px dashed var(--ink-3)}
+.stop{position:relative;padding-top:52px}
+.stop:before{content:"";position:absolute;left:0;top:7px;width:17px;height:17px;border-radius:50%;background:var(--paper);border:1.5px solid var(--accent)}
+.stop .t{font-size:28px;font-weight:300}
+.stop h3{font-family:var(--hand);font-weight:400;font-size:27px;margin:10px 0;line-height:1.3}
+.stop p{font-size:17px;color:var(--ink-2);line-height:1.8;font-weight:300}
+.stop .src{margin-top:10px;font-size:13px}
+.route .mascot{right:130px;top:62px;width:110px}
+
+/* 提醒 */
+.two{display:grid;grid-template-columns:1.2fr 1fr;gap:70px}
+.memo{margin-top:30px;border-top:1px solid var(--ink)}
+.memo div{display:grid;grid-template-columns:110px 1fr;padding:18px 0;border-bottom:1px solid var(--line);font-size:21px}
+.memo b{font-weight:400;color:var(--accent);font-size:16px;letter-spacing:.12em;padding-top:3px}
+
+/* 文獻卡片 */
+.refs-page h2{font-size:44px;margin:8px 0 0}
+.refs-page .sub{font-size:16px;color:var(--ink-3);letter-spacing:.1em;margin-top:2px}
+.refgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px 20px;margin-top:18px}
+.ref{background:#FBF9F4;border:1px solid var(--line);padding:14px 18px 12px;height:268px;overflow:hidden;display:flex;flex-direction:column;transition:border-color .3s}
+.ref.flash{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+.ref .head{display:flex;gap:10px}
+.ref .id{font-size:17px;color:var(--accent);letter-spacing:.04em;padding-top:3px;min-width:38px}
+.ref a{font-family:var(--hand);font-size:20px;line-height:1.35;color:var(--ink);text-decoration:none;border-bottom:1px solid var(--kraft);
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ref a:hover{color:var(--accent)}
+.ref .meta{font-size:13px;color:var(--ink-3);margin-top:6px;letter-spacing:.02em;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+.ref .sum{font-size:14.5px;line-height:1.65;color:var(--ink);margin-top:6px;font-weight:300;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ref .cov{font-size:13px;line-height:1.55;color:var(--ink-2);margin-top:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ref .cov b{font-weight:400;color:var(--ink-3);margin-right:6px}
+.ref .tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:auto;padding-top:6px}
+.ref .tags span{font-size:12px;padding:1px 8px;border:1px solid var(--line);color:var(--ink-2);border-radius:2px}
+.ref .tags span.cat{border-color:var(--kraft);background:rgba(200,183,150,.18)}
+.ref .tags span.warn{border-color:var(--accent-soft);color:var(--accent)}
+.ref.slot{border:1.5px dashed var(--kraft);background:transparent;align-items:center;justify-content:center;color:var(--ink-3);text-align:center}
+.ref.slot span{font-size:30px;font-weight:300}
+.ref.slot p{font-size:14px;letter-spacing:.12em;margin-top:6px}
+
+/* 介面 */
+#progress{position:fixed;left:0;bottom:0;height:2px;background:var(--accent);transition:width .3s ease;z-index:5}
+#notes{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);width:min(900px,92vw);background:rgba(52,50,46,.92);color:#F5F2EB;
+  padding:18px 24px;border-radius:4px;font-size:16px;line-height:1.8;display:none;z-index:6}
+#notes.show{display:block}
+#notes small{display:block;opacity:.55;font-size:12px;letter-spacing:.2em;margin-bottom:4px}
+#hint{position:fixed;right:18px;top:14px;font-size:12px;color:#8a8478;letter-spacing:.1em;z-index:6}
+#nav{position:fixed;right:18px;bottom:14px;display:flex;gap:6px;z-index:6}
+#nav button{width:34px;height:30px;border:1px solid #cfc7b8;background:rgba(245,242,235,.85);color:#6F6A61;font-size:15px;border-radius:2px}
+#nav button:hover{color:var(--accent);border-color:var(--accent)}
+aside.notes{display:none}
+@media print{
+  @page{size:1600px 900px;margin:0}
+  html,body{overflow:visible;background:none}
+  #stage{position:static}
+  #deck{transform:none!important;position:static;width:auto;height:auto}
+  .slide{position:relative;opacity:1;visibility:visible;width:1600px;height:900px;page-break-after:always;box-shadow:none}
+  #progress,#notes,#hint,#nav,.home-btn{display:none}
+}
+</style>
+</head>
+<body>
+<div id="stage"><div id="deck">
+
+<!-- ===== 封面 ===== -->
+<section class="slide cover plain" data-topic="cover">
+  <div class="vline"></div>
+  <div class="stamp">員林<br>手帳</div>
+  <div class="inner">
+    <div class="kicker">Yuanlin Notes · 2026.11</div>
+    <h1>員林其實很年輕
+      <svg class="brush" viewBox="0 0 640 26" preserveAspectRatio="none" aria-hidden="true"><path d="M4 16 C 90 6, 180 22, 280 13 S 470 6, 636 14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" opacity=".75"/></svg>
+    </h1>
+    <p class="lead">18 處景點 × 27 家美食 × 23 家咖啡甜點，給年輕人的員林指南</p>
+    <button class="enter" data-go="home">進入主題 →</button>
+  </div>
+  <img class="mascot" src="img/mascot_wave.png" alt="">
+  <div class="foot"><span>員林好吃好玩 Wiki</span><b>封面</b></div>
+  <aside class="notes">很多人對員林的印象停在「路過的小鎮」。今天只用 wiki 整理的資料，看員林年輕的一面。</aside>
+</section>
+
+<!-- ===== 主頁 =====
+  新增主題：把一個 .tile.empty 換成 <button class="tile" data-go="新主題id">…</button>，
+  並在下方加入 data-topic="新主題id" 的 <section>（範本見檔案最後）。 -->
+<section class="slide home" data-topic="home">
+  <div class="kicker">Contents</div>
+  <h2>選一個主題開始</h2>
+  <img class="mascot" src="img/mascot_curious.png" alt="">
+
+  <div class="row"><div class="row-label"><b>A</b>依類型</div>
+    <div class="tiles">
+      <button class="tile" data-go="place"><span class="arrow">→</span><h3>景點</h3><p>18 處 · 市區散步與山區夜景</p></button>
+      <button class="tile" data-go="food"><span class="arrow">→</span><h3>美食</h3><p>27 家 · 小吃、夜市、早午餐</p></button>
+      <button class="tile" data-go="cafe"><span class="arrow">→</span><h3>咖啡廳</h3><p>19 家</p></button>
+      <button class="tile" data-go="dessert"><span class="arrow">→</span><h3>甜點</h3><p>4 家</p></button>
+      <div class="tile empty"><span>＋</span><small>預留・新類型</small></div>
+    </div></div>
+
+  <div class="row"><div class="row-label"><b>B</b>依族群推薦</div>
+    <div class="tiles">
+      <button class="tile" data-go="student"><span class="arrow">→</span><h3>學生小資</h3><p>10 元泡芙起</p></button>
+      <button class="tile" data-go="ig"><span class="arrow">→</span><h3>IG 打卡族</h3><p>枯寂風、玻璃屋、落地窗</p></button>
+      <button class="tile" data-go="pet"><span class="arrow">→</span><h3>毛孩家庭</h3><p>9 家寵物友善</p></button>
+      <button class="tile" data-go="night"><span class="arrow">→</span><h3>夜貓子</h3><p>營業到晚上 10 點</p></button>
+      <button class="tile" data-go="family"><span class="arrow">→</span><h3>親子家庭</h3><p>溜滑梯、農場、免費展館</p></button>
+    </div></div>
+
+  <div class="row"><div class="row-label"><b>C</b>行程與資料</div>
+    <div class="tiles">
+      <button class="tile" data-go="route"><span class="arrow">→</span><h3>一日路線</h3><p>早上 9 點到晚上 10 點</p></button>
+      <button class="tile" data-go="tips"><span class="arrow">→</span><h3>出發前提醒</h3><p>公休、預約、限量</p></button>
+      <button class="tile" data-go="refs"><span class="arrow">→</span><h3>建議文獻</h3><p>23 筆，14 筆已導入</p></button>
+      <div class="tile empty"><span>＋</span><small>預留・新主題</small></div>
+      <div class="tile empty"><span>＋</span><small>預留・新主題</small></div>
+    </div></div>
+
+  <div class="foot"><span>員林，比你想的還年輕。</span><b>主頁</b></div>
+  <aside class="notes">點任一主題進入內容，看完會回到這一頁。虛線格是之後要新增的位置。</aside>
+</section>
+
+<!-- ===== A 依類型 ===== -->
+<section class="slide" data-topic="place" data-title="景點">
+  <div class="topbar"><div class="kicker"><b>A · 景點</b>Places · 市區散步</div><button class="home-btn" data-go="home">← 主頁</button></div>
+  <h2>景點</h2>
+  <div class="mini" data-list="place:0-9"></div>
+  <div class="more">延伸閱讀 <button data-ref="R6">R6</button><button data-ref="R7">R7</button><span class="what">明治製糖員林驛、單車一日遊</span></div>
+  <div class="foot"><span>來源：[[主題_員林景點與親子]]</span><b></b></div>
+  <aside class="notes">火車站周邊走路或騎車就能串起來，多數免費。</aside>
+</section>
+
+<section class="slide" data-topic="place" data-title="景點">
+  <div class="topbar"><div class="kicker"><b>A · 景點</b>Places · 山區、夜景與花季</div><button class="home-btn" data-go="home">← 主頁</button></div>
+  <h2>景點</h2>
+  <div class="mini" data-list="place:9-18"></div>
+  <div class="more">延伸閱讀 <button data-ref="R1">R1</button><button data-ref="R2">R2</button><button data-ref="R3">R3</button><span class="what">景點一日遊懶人包</span></div>
+  <div class="foot"><span>來源：[[主題_員林景點與親子]]</span><b></b></div>
+  <aside class="notes">東側八卦山麓的農場、夜景餐廳與步道。百果山探索樂園與 KOKOMO 已暫停營業。</aside>
+</section>
+
+<section class="slide" data-topic="food" data-title="美食">
+  <div class="topbar"><div class="kicker"><b>A · 美食</b>Local Food · 肉圓與古早味</div><button class="home-btn" data-go="home">← 主頁</button></div>
+  <h2>美食</h2>
+  <div class="mini" data-list="food:0-9"></div>
+  <div class="more">延伸閱讀 <button data-ref="R12">R12</button><button data-ref="R14">R14</button><span class="what">員林美食 TOP10、寶斗肉圓</span></div>
+  <div class="foot"><span>來源：[[主題_員林在地美食與夜市]]</span><b></b></div>
+  <aside class="notes">寶斗肉圓只開週三、四；東門賴家碗粿要早去。</aside>
+</section>
+
+<section class="slide" data-topic="food" data-title="美食">
+  <div class="topbar"><div class="kicker"><b>A · 美食</b>Local Food · 飯、麵與早餐</div><button class="home-btn" data-go="home">← 主頁</button></div>
+  <h2>美食</h2>
+  <div class="mini" data-list="food:9-18"></div>
+  <div class="more">延伸閱讀 <button data-ref="R13">R13</button><span class="what">員林 10 大在地小吃</span></div>
+  <div class="foot"><span>來源：[[主題_員林在地美食與夜市]]</span><b></b></div>
+  <aside class="notes">從凌晨 02:30 的烤蛋餅到營業到 02:00 的梅干扣肉，一天都吃得到。</aside>
+</section>
+
+<section class="slide" data-topic="food" data-title="美食">
+  <div class="topbar"><div class="kicker"><b>A · 美食</b>Local Food · 夜市、冰品、早午餐與伴手禮</div><button class="home-btn" data-go="home">← 主頁</button></div>
+  <h2>美食</h2>
+  <div class="mini" data-list="food:18-27"></div>
+  <div class="more">延伸閱讀 <button data-ref="R15">R15</button><button data-ref="R16">R16</button><button data-ref="R17">R17</button><span class="what">龍燈夜市、早午餐、伴手禮</span></div>
+  <div class="foot"><span>來源：[[主題_員林在地美食與夜市]]</span><b></b></div>
+  <aside class="notes">另有聚餐用的鍋泰山南洋鍋物、脂本燒肉，收錄在 wiki。</aside>
+</section>
+
+<section class="slide" data-topic="cafe" data-title="咖啡廳">
+  <div class="topbar"><div class="kicker"><b>A · 咖啡廳</b>Cafes · 日式、老宅與採光</div><button class="home-btn" data-go="home">← 主頁</button></div>
+  <h2>咖啡廳</h2>
+  <div class="mini" data-list="cafe:0-9"></div>
+  <div class="more">延伸閱讀 <button data-ref="R18">R18</button><button data-ref="R19">R19</button><button data-ref="R20">R20</button><span class="what">員林咖啡廳整理、漬果、有片森林</span></div>
+  <div class="foot"><span>來源：各店家頁</span><b></b></div>
+  <aside class="notes">前 9 家偏日式、老宅與採光。</aside>
+</section>
+
+<section class="slide" data-topic="cafe" data-title="咖啡廳">
+  <div class="topbar"><div class="kicker"><b>A · 咖啡廳</b>Cafes · 自家烘焙與社區咖啡</div><button class="home-btn" data-go="home">← 主頁</button></div>
+  <h2>咖啡廳</h2>
+  <div class="mini" data-list="cafe:9-18"></div>
+  <div class="more">延伸閱讀 <button data-ref="R16">R16</button><span class="what">員林早午餐</span></div>
+  <div class="foot"><span>來源：各店家頁</span><b></b></div>
+  <aside class="notes">後 9 家偏自家烘焙、社區與平價早午茶。</aside>
+</section>
+
+<section class="slide" data-topic="cafe" data-title="咖啡廳">
+  <div class="topbar"><div class="kicker"><b>A · 咖啡廳</b>Cafes · 新收錄</div><button class="home-btn" data-go="home">← 主頁</button></div>
+  <h2>咖啡廳</h2>
+  <div class="mini" data-list="cafe:18-27" data-slots="8"></div>
+  <div class="more">延伸閱讀 <button data-ref="R18">R18</button><button data-ref="R19">R19</button><span class="what">員林咖啡廳 5 間、漬果</span>　虛線卡為之後新增咖啡廳的位置</div>
+  <div class="foot"><span>來源：[[食_漬果succade]]</span><b></b></div>
+  <aside class="notes">2026-11-11 導入 R18–R20 後新收錄的咖啡廳。NOV.Cafe 已更名勤易來；日佐甜室同址出現 Subi，待確認。</aside>
+</section>
+
+<section class="slide" data-topic="dessert" data-title="甜點">
+  <div class="topbar"><div class="kicker"><b>A · 甜點</b>Desserts</div><button class="home-btn" data-go="home">← 主頁</button></div>
+  <h2>甜點</h2>
+  <div class="cards">
+    <div class="card"><span class="tape"></span><span class="tag">現點現灌</span><h3>石原省太郎</h3>
+      <dl><dt>必點</dt><dd>10 元爆漿泡芙</dd><dt>時間</dt><dd>14:30–19:00</dd></dl><div class="src">[[食_石原省太郎員林店]]</div></div>
+    <div class="card"><span class="tape"></span><span class="tag">散步點心</span><h3>莫忘鯛魚燒</h3>
+      <dl><dt>必點</dt><dd>奶油黑白配、珍珠卡士達</dd><dt>時間</dt><dd>12:00–18:30</dd></dl><div class="src">[[食_莫忘鯛魚燒]]</div></div>
+    <div class="card"><span class="tape"></span><span class="tag">光明街巷弄</span><h3>庫洛瑪私房甜點</h3>
+      <dl><dt>必點</dt><dd>酵母鬆餅、手工冰品</dd><dt>時間</dt><dd>12:00–21:00</dd></dl><div class="src">[[食_庫洛瑪私房甜點]]</div></div>
+    <div class="card"><span class="tape"></span><span class="tag">衡文宮附近</span><h3>員林柒拾蛋糕</h3>
+      <dl><dt>必點</dt><dd>泡芙、手作甜點</dd><dt>時間</dt><dd>13:30–19:00</dd><dt>公休</dt><dd>週三</dd></dl><div class="src">[[食_員林柒拾蛋糕]]</div></div>
+  </div>
+  <div class="more">延伸閱讀 <button data-ref="R19">R19</button><button data-ref="R22">R22</button><button data-ref="R23">R23</button><span class="what">蜜餞甜點、石原省太郎</span></div>
+  <div class="foot"><span>員林其實很年輕</span><b></b></div>
+  <aside class="notes">四家甜點店，前三家都是銅板到平價。</aside>
+</section>
+
+<!-- ===== B 依族群推薦 ===== -->
+<section class="slide" data-topic="student" data-title="學生小資">
+  <div class="topbar"><div class="kicker"><b>B · 學生小資</b>Pocket Money</div><button class="home-btn" data-go="home">← 主頁</button></div>
+  <h2>學生預算也能吃</h2>
+  <table>
+    <thead><tr><th>店家</th><th>必點</th><th>價格</th><th>營業時間</th><th>來源</th></tr></thead>
+    <tbody>
+      <tr><td class="name">石原省太郎</td><td>現點現灌爆漿泡芙</td><td class="price">10 元</td><td>14:30–19:00</td><td class="src">[[食_石原省太郎員林店]]</td></tr>
+      <tr><td class="name">黃家鱟殼炒蚵仔麵</td><td>炒蚵麵（2023）</td><td class="price">50 元起</td><td>11:00–19:00，週日休</td><td class="src">[[食_黃家鱟殼炒蚵仔麵]]</td></tr>
+      <tr><td class="name">寶斗肉圓</td><td>綜合湯（2024）</td><td class="price">25 元</td><td>週三、四 11:00–17:00</td><td class="src">[[食_寶斗肉圓]]</td></tr>
+      <tr><td class="name">莫忘鯛魚燒</td><td>奶油黑白配、珍珠卡士達</td><td class="price">—</td><td>12:00–18:30</td><td class="src">[[食_莫忘鯛魚燒]]</td></tr>
+      <tr><td class="name">所在 suō zài</td><td>經典原味舒芙蕾</td><td class="price">120 元</td><td>11:00–20:00</td><td class="src">[[食_所在_suo_zai]]</td></tr>
+    </tbody>
+  </table>
+  <p class="sum">一天銅板估算：$\underbrace{50}_{\text{炒蚵麵}} + \underbrace{25}_{\text{綜合湯}} + \underbrace{10}_{\text{泡芙}} = 85$ 元　<span class="src">「—」：wiki 只寫銅板價</span></p>
+  <div class="more">延伸閱讀 <button data-ref="R13">R13</button><button data-ref="R14">R14</button><button data-ref="R23">R23</button><span class="what">在地小吃、寶斗肉圓、石原省太郎品項</span></div>
+  <div class="foot"><span>員林其實很年輕</span><b></b></div>
+  <aside class="notes">「—」代表 wiki 沒有確切金額，只寫銅板價或親民價格。</aside>
+</section>
+
+<section class="slide" data-topic="ig" data-title="IG 打卡族">
+  <div class="topbar"><div class="kicker"><b>B · IG 打卡族</b>Photo Spots</div><button class="home-btn" data-go="home">← 主頁</button></div>
+  <h2>IG 打卡族</h2>
+  <div class="cards">
+    <div class="card"><span class="tape"></span><span class="tag">日式枯寂風</span><h3>透明空氣</h3>
+      <dl><dt>必點</dt><dd>透明千層酥（每日限量 4–5 份）</dd><dt>時間</dt><dd>11:00–17:00</dd><dt>提醒</dt><dd>完全預約制</dd></dl><div class="src">[[食_透明空氣]]</div></div>
+    <div class="card"><span class="tape"></span><span class="tag">韓系玻璃屋老宅</span><h3>右舍咖啡</h3>
+      <dl><dt>必點</dt><dd>抹茶塔、甘單抹茶卷</dd><dt>時間</dt><dd>09:00–21:30</dd><dt>位置</dt><dd>員林公園旁</dd></dl><div class="src">[[食_右舍咖啡]]</div></div>
+    <div class="card"><span class="tape"></span><span class="tag">婚紗主題農場</span><h3>琉璃仙境</h3>
+      <dl><dt>必拍</dt><dd>哈比屋、粉紅教堂、水管屋</dd><dt>時間</dt><dd>約 09:30–18:00</dd><dt>提醒</dt><dd>門票各來源不同</dd></dl><div class="src">[[景_琉璃仙境]]</div></div>
+    <div class="card"><span class="tape"></span><span class="tag">夜景景觀餐廳</span><h3>雲河星空</h3>
+      <dl><dt>必拍</dt><dd>玻璃天空步道、高空鞦韆</dd><dt>時間</dt><dd>14:00–22:00</dd><dt>公休</dt><dd>週二</dd></dl><div class="src">[[景_雲河星空景觀餐廳]]</div></div>
+  </div>
+  <div class="more">延伸閱讀 <button data-ref="R3">R3</button><button data-ref="R4">R4</button><button data-ref="R5">R5</button><span class="what">網美景點</span>　有片森林、合掌喫茶也很好拍</div>
+  <div class="foot"><span>員林其實很年輕</span><b></b></div>
+  <aside class="notes">四家都以空間氛圍出名。</aside>
+</section>
+
+<section class="slide" data-topic="pet" data-title="毛孩家庭">
+  <div class="topbar"><div class="kicker"><b>B · 毛孩家庭</b>Pet Friendly</div><button class="home-btn" data-go="home">← 主頁</button></div>
+  <h2>帶毛孩一起去</h2>
+  <div class="pets">
+    <div class="big">$\dfrac{9}{23} \approx 39\%$<p>咖啡甜點店中，大約每 5 家就有 2 家寵物友善。另有 Attic 小閣樓（餐廳）。</p></div>
+    <div class="names">
+      <span>右舍咖啡</span><span>日佐甜室</span><span>小街咖啡</span>
+      <span>山形咖啡</span><span>所在 suō zài</span><span>wonderfool cafe</span>
+      <span>NOV.Cafe</span><span>窩嚐咖啡</span><span>金水咖啡<i>貓店長</i></span>
+    </div>
+  </div>
+  <div class="foot"><span>來源：各店家頁「寵物友善」標籤</span><b></b></div>
+  <aside class="notes">大約每 5 家就有 2 家可以帶毛孩。金水咖啡還有貓店長。</aside>
+</section>
+
+<section class="slide" data-topic="night" data-title="夜貓子">
+  <div class="topbar"><div class="kicker"><b>B · 夜貓子</b>Night Owls</div><button class="home-btn" data-go="home">← 主頁</button></div>
+  <h2>夜貓子的員林</h2>
+  <table>
+    <thead><tr><th>店家</th><th>特色</th><th>營業時間</th><th>來源</th></tr></thead>
+    <tbody>
+      <tr><td class="name">極光森林</td><td>星空帳篷看夜景</td><td>16:00–23:30，週一、二休</td><td class="src">[[景_極光森林]]</td></tr>
+      <tr><td class="name">龍燈夜市</td><td>大魷魚、鴨肉羹、粉圓</td><td>週二、五、六、日 17:00–23:00</td><td class="src">[[食_龍燈夜市]]</td></tr>
+      <tr><td class="name">土丿匕木十豆寸</td><td>老屋咖啡調酒、關東煮</td><td>18:00–22:00</td><td class="src">[[食_土丿匕木十豆寸_Cafe]]</td></tr>
+      <tr><td class="name">阿成梅干扣肉</td><td>自助夾菜宵夜</td><td>到 02:00，週日休</td><td class="src">[[食_阿成梅干扣肉]]</td></tr>
+      <tr><td class="name">和平早餐烤蛋餅</td><td>通宵後的烤蛋餅</td><td>02:30 開，週一休</td><td class="src">[[食_和平早餐烤蛋餅]]</td></tr>
+    </tbody>
+  </table>
+  <div class="more">延伸閱讀 <button data-ref="R11">R11</button><button data-ref="R15">R15</button><span class="what">夜景餐廳、龍燈夜市</span>　金水咖啡也開到 22:00</div>
+  <div class="foot"><span>員林其實很年輕</span><b></b></div>
+  <aside class="notes">土丿匕木十豆寸在浮圳巷，是阿嬤家風格的老屋。</aside>
+</section>
+
+<section class="slide" data-topic="family" data-title="親子家庭">
+  <div class="topbar"><div class="kicker"><b>B · 親子家庭</b>Family</div><button class="home-btn" data-go="home">← 主頁</button></div>
+  <h2>親子家庭</h2>
+  <div class="cards">
+    <div class="card"><span class="tape"></span><span class="tag">戶外遊樂區</span><h3>百果山溜滑梯</h3>
+      <dl><dt>必玩</dt><dd>超長彩虹溜滑梯、共融遊具</dd><dt>提醒</dt><dd>假日停車位少</dd></dl><div class="src">[[景_百果山溜滑梯]]</div></div>
+    <div class="card"><span class="tape"></span><span class="tag">休閒農場</span><h3>琉璃仙境</h3>
+      <dl><dt>必玩</dt><dd>餵魚、玩沙、羊駝與小馬</dd><dt>時間</dt><dd>約 09:30–18:00</dd></dl><div class="src">[[景_琉璃仙境]]</div></div>
+    <div class="card"><span class="tape"></span><span class="tag">免費展館</span><h3>警察故事館</h3>
+      <dl><dt>必玩</dt><dd>警用重機合照、志工導覽</dd><dt>時間</dt><dd>09:00–11:30、14:00–16:30</dd><dt>公休</dt><dd>週一</dd></dl><div class="src">[[景_警察故事館]]</div></div>
+    <div class="card"><span class="tape"></span><span class="tag">夜景餐廳</span><h3>極光森林</h3>
+      <dl><dt>必玩</dt><dd>親子遊戲室、戲水池</dd><dt>時間</dt><dd>16:00–23:30</dd><dt>公休</dt><dd>週一、二</dd></dl><div class="src">[[景_極光森林]]</div></div>
+  </div>
+  <div class="more">⚠️ 百果山探索樂園已暫停營業（2024-09-01 起）　延伸閱讀 <button data-ref="R9">R9</button><button data-ref="R10">R10</button><span class="what">樂園舊遊記（未導入）</span></div>
+  <div class="foot"><span>來源：[[主題_員林景點與親子]]</span><b></b></div>
+  <aside class="notes">四處都適合帶小孩；百果山探索樂園已暫停營業。</aside>
+</section>
+
+<!-- ===== C 行程與資料 ===== -->
+<section class="slide route" data-topic="route" data-title="一日路線">
+  <div class="topbar"><div class="kicker"><b>C · 一日路線</b>One Day Route</div><button class="home-btn" data-go="home">← 主頁</button></div>
+  <h2>員林一日路線</h2>
+  <img class="mascot" src="img/mascot_backpack.png" alt="">
+  <div class="timeline">
+    <div class="stop"><div class="t">09:00</div><h3>山形咖啡</h3><p>肉桂捲、肉排吐司當早餐。</p><div class="src">[[食_山形咖啡]]</div></div>
+    <div class="stop"><div class="t">10:00</div><h3>員林公園、興賢書院</h3><p>市區散步，考生祈福。</p><div class="src">[[景_員林公園]]</div></div>
+    <div class="stop"><div class="t">11:30</div><h3>黃家炒蚵麵</h3><p>第一市場附近午餐，50 元起。</p><div class="src">[[食_黃家鱟殼炒蚵仔麵]]</div></div>
+    <div class="stop"><div class="t">14:30</div><h3>石原省太郎</h3><p>開門就到，10 元泡芙。</p><div class="src">[[食_石原省太郎員林店]]</div></div>
+    <div class="stop"><div class="t">16:00</div><h3>右舍咖啡</h3><p>員林公園旁玻璃屋。</p><div class="src">[[食_右舍咖啡]]</div></div>
+    <div class="stop"><div class="t">18:30</div><h3>龍燈夜市</h3><p>週二、五、六、日的晚餐。</p><div class="src">[[食_龍燈夜市]]</div></div>
+  </div>
+  <div class="more">非夜市日：改去極光森林看夜景，或土丿匕木十豆寸喝調酒　延伸閱讀 <button data-ref="R7">R7</button><span class="what">單車路線</span></div>
+  <div class="foot"><span>員林其實很年輕</span><b></b></div>
+  <aside class="notes">路線依 wiki 營業時間安排。右舍咖啡營業時間各來源不同（R1 寫 08:00–15:00），下午前往前請確認。黃家週日休。</aside>
+</section>
+
+<section class="slide" data-topic="tips" data-title="出發前提醒">
+  <div class="topbar"><div class="kicker"><b>C · 出發前提醒</b>Before You Go</div><button class="home-btn" data-go="home">← 主頁</button></div>
+  <h2>出發前提醒</h2>
+  <div class="two">
+    <table>
+      <thead><tr><th>公休</th><th>店家</th></tr></thead>
+      <tbody>
+        <tr><td class="price">週一</td><td>合掌喫茶、秋瀾號、警察故事館、百果山炸粿</td></tr>
+        <tr><td class="price">週二</td><td>日佐甜室</td></tr>
+        <tr><td class="price">週三</td><td>員林柒拾蛋糕</td></tr>
+        <tr><td class="price">週日</td><td>小街咖啡自家烘焙、黃家炒蚵麵、阿華爌肉飯</td></tr>
+        <tr><td class="price">週一二</td><td>極光森林；雲河星空週二休</td></tr>
+      </tbody>
+    </table>
+    <div class="memo">
+      <div><b>要預約</b><span>透明空氣（沒有預約不能入場）</span></div>
+      <div><b>有限量</b><span>透明千層酥每天 4–5 份</span></div>
+      <div><b>有低消</b><span>日佐甜室每人一杯飲品</span></div>
+      <div><b>只收現金</b><span>合掌喫茶食事處（需脫鞋）</span></div>
+      <div><b>營業日少</b><span>寶斗肉圓只開週三、四；龍燈夜市週二五六日</span></div>
+      <div><b>暫停營業</b><span>百果山探索樂園、KOKOMO</span></div>
+    </div>
+  </div>
+  <div class="more">網路資訊可能已更新 <button data-ref="R21">R21</button><span class="what">透明空氣地址與訂位</span><button data-ref="R22">R22</button><button data-ref="R23">R23</button><span class="what">石原省太郎營業時間與供應量</span></div>
+  <div class="foot"><span>來源：各店家頁營業時間與簡介</span><b></b></div>
+  <aside class="notes">排行程前先對一下公休日。</aside>
+</section>
+
+<!-- ===== 建議文獻（卡片由下方 REFS 資料產生；data-cards 以逗號列出編號，slot 為預留卡） ===== -->
+<section class="slide refs-page" data-topic="refs" data-title="建議文獻">
+  <div class="topbar"><div class="kicker"><b>C · 建議文獻</b>References · 景點</div><button class="home-btn" data-go="home">← 主頁</button></div>
+  <h2>建議文獻</h2><div class="sub">皆已開啟網頁確認 · 查詢日期 2026-11-11 · 綠色標籤為已導入 wiki</div>
+  <div class="refgrid" data-cards="R1,R2,R3,R4,R5,R6"></div>
+  <div class="foot"><span>點擊標題在新分頁開啟 · 要納入 wiki 請說「導入 R 編號」</span><b></b></div>
+  <aside class="notes">景點類文獻。</aside>
+</section>
+<section class="slide refs-page" data-topic="refs" data-title="建議文獻">
+  <div class="topbar"><div class="kicker"><b>C · 建議文獻</b>References · 交通、親子與約會</div><button class="home-btn" data-go="home">← 主頁</button></div>
+  <h2>建議文獻</h2><div class="sub">皆已開啟網頁確認 · 查詢日期 2026-11-11 · 綠色標籤為已導入 wiki</div>
+  <div class="refgrid" data-cards="R7,R8,R9,R10,R11,slot"></div>
+  <div class="foot"><span>點擊標題在新分頁開啟 · 要納入 wiki 請說「導入 R 編號」</span><b></b></div>
+  <aside class="notes">交通、親子與約會類文獻。虛線卡是新文獻的預留位置。</aside>
+</section>
+<section class="slide refs-page" data-topic="refs" data-title="建議文獻">
+  <div class="topbar"><div class="kicker"><b>C · 建議文獻</b>References · 美食</div><button class="home-btn" data-go="home">← 主頁</button></div>
+  <h2>建議文獻</h2><div class="sub">皆已開啟網頁確認 · 查詢日期 2026-11-11 · 綠色標籤為已導入 wiki</div>
+  <div class="refgrid" data-cards="R12,R13,R14,R15,R16,R17"></div>
+  <div class="foot"><span>點擊標題在新分頁開啟 · 要納入 wiki 請說「導入 R 編號」</span><b></b></div>
+  <aside class="notes">美食類文獻。</aside>
+</section>
+<section class="slide refs-page" data-topic="refs" data-title="建議文獻">
+  <div class="topbar"><div class="kicker"><b>C · 建議文獻</b>References · 咖啡廳與甜點</div><button class="home-btn" data-go="home">← 主頁</button></div>
+  <h2>建議文獻</h2><div class="sub">皆已開啟網頁確認 · 查詢日期 2026-11-11 · 綠色標籤為已導入 wiki</div>
+  <div class="refgrid" data-cards="R18,R19,R20,R21,R22,R23"></div>
+  <div class="foot"><span>點擊標題在新分頁開啟 · 要納入 wiki 請說「導入 R 編號」</span><b></b></div>
+  <aside class="notes">咖啡廳與甜點類文獻，部分可用來查核 wiki 店家頁。</aside>
+</section>
+
+<!-- ===== 新主題範本（複製後移到「建議文獻」之前，改 data-topic / data-title / 內容）=====
+<section class="slide" data-topic="新主題id" data-title="新主題名稱">
+  <div class="topbar"><div class="kicker"><b>B · 新主題名稱</b>English</div><button class="home-btn" data-go="home">← 主頁</button></div>
+  <h2>新主題名稱</h2>
+  （內容：可用 .cards / table / .mini / .timeline 版型）
+  <div class="foot"><span>員林其實很年輕</span><b></b></div>
+  <aside class="notes">講者備註</aside>
+</section>
+-->
+
+</div></div>
+
+<div id="progress"></div>
+<div id="notes"><small>講者備註</small><div id="notesText"></div></div>
+<div id="hint">← → 翻頁 · H 主頁 · F 全螢幕 · S 備註</div>
+<div id="nav"><button id="bPrev" title="上一頁">‹</button><button id="bHome" title="主頁">⌂</button><button id="bNext" title="下一頁">›</button></div>
+
+<script>
+/* ===== 資料：新增咖啡廳或文獻時，在這裡加一筆即可 ===== */
+const CAFES=[
+  {n:'透明空氣',s:'日式枯寂風 · 預約制',m:'透明千層酥（每日限量 4–5 份）',h:'11:00–17:00',r:'食_透明空氣'},
+  {n:'合掌喫茶食事處',s:'日式庭園 · 宇治抹茶',m:'宇治抹茶甜點',h:'11:30–20:30（週一休）',r:'食_合掌喫茶食事處'},
+  {n:'右舍咖啡',s:'韓系玻璃屋老宅',m:'抹茶塔、甘單抹茶卷',h:'09:00–21:30（全年無休）',r:'食_右舍咖啡'},
+  {n:'日佐甜室',s:'老宅 · 同址 Subi 待確認',m:'小山園抹茶戚風蛋糕',h:'11:00–20:00（週二休）',r:'食_日佐甜室'},
+  {n:'勤易來 Kafe In Life',s:'原 NOV.Cafe · 實中巷老宅',m:'咖啡與甜點',h:'09:00–21:00',r:'食_NOV_Cafe'},
+  {n:'土丿匕木十豆寸',s:'浮圳巷老屋',m:'咖啡調酒、關東煮',h:'18:00–22:00（六日 14:00 起）',r:'食_土丿匕木十豆寸_Cafe'},
+  {n:'所在 suō zài',s:'郵局旁老宅',m:'經典原味舒芙蕾（120 元）',h:'11:00–20:00',r:'食_所在_suo_zai'},
+  {n:'有片森林',s:'落地窗 · 自然採光',m:'季節水果戚風蛋糕',h:'08:00–18:00',r:'食_有片森林'},
+  {n:'法蕾‧熊',s:'法式甜點',m:'經典舒芙蕾、法式塔類',h:'11:00–21:00',r:'食_法蕾熊手工經典舒芙蕾'},
+  {n:'ALL IN Coffee',s:'國宅隱藏版',m:'麻糬鬆餅、金莎抹茶千層',h:'營業時間 wiki 無資料',r:'食_ALL_IN_Coffee'},
+  {n:'秋瀾號咖啡專賣所',s:'文青巷弄',m:'提拉米蘇、拿鐵',h:'12:00–21:00（週一休）',r:'食_秋瀾號咖啡專賣所'},
+  {n:'窩嚐咖啡',s:'自家烘焙',m:'清爽千層蛋糕、單品咖啡',h:'11:00–19:00',r:'食_窩嚐咖啡自家烘焙館'},
+  {n:'金水咖啡',s:'貓店長駐店',m:'草莓生乳酪蛋糕、手沖',h:'13:00–17:00 / 18:00–22:00',r:'食_金水咖啡'},
+  {n:'小街咖啡',s:'僑信街巷弄',m:'草莓生乳酪、現烤鬆餅',h:'10:00–18:00（週日休）',r:'食_小街咖啡自家烘焙'},
+  {n:'松果咖啡',s:'成功東路社區',m:'義式與手沖咖啡',h:'二至六 10:00–21:00，日 10:00–18:00',r:'食_松果咖啡'},
+  {n:'山形咖啡',s:'親民平價',m:'原味肉桂捲、肉排吐司',h:'07:30–16:30',r:'食_山形咖啡'},
+  {n:'wonderfool cafe',s:'早午茶',m:'招牌貝果',h:'09:00–15:00',r:'食_wonderfool_cafe'},
+  {n:'班果咖啡',s:'員林大道',m:'酥脆飽滿泡芙',h:'11:00–19:00',r:'食_班果咖啡_bengo_cafe'},
+  {n:'漬果 succade',s:'右舍旗下 · 日式老屋',m:'員林蜜餞甜點＋手沖，套餐 205 元起',h:'三至日 13:00–17:00（一、二休）',r:'食_漬果succade'},
+];
+const PLACES=[
+  {n:'員林公園',s:'市區公園',m:'老字號公園，興賢書院在園內',h:'—',r:'景_員林公園'},
+  {n:'興賢書院',s:'古蹟 · 免費',m:'1807 年文昌祠起源，考生祈福',h:'08:00–20:00',r:'景_興賢書院'},
+  {n:'警察故事館',s:'日式官舍 · 免費',m:'警察文物、警用重機合照',h:'09:00–11:30、14:00–16:30（週一休）',r:'景_警察故事館'},
+  {n:'員林衡文宮',s:'廟宇 · 免費',m:'巨大玄天上帝神像',h:'06:00–21:00',r:'景_員林衡文宮'},
+  {n:'打石巷',s:'老街',m:'員林最早的街道，近第一市場',h:'—',r:'景_打石巷'},
+  {n:'明治製糖員林驛',s:'日治木造建築',m:'火車站後方的糖業車站',h:'文資審議中（2019）',r:'景_明治製糖員林驛'},
+  {n:'龍燈公園',s:'公園 · 地標',m:'2012 燈會主燈、3D 彩繪',h:'—',r:'景_龍燈公園'},
+  {n:'圓林園',s:'新公園',m:'滯洪池草坡，適合野餐',h:'—',r:'景_圓林園'},
+  {n:'B12 文創特區',s:'貨櫃文創',m:'3D 彩繪、鐵路穀倉',h:'10:30–21:00（2018）',r:'景_B12文創特區'},
+  {n:'琉璃仙境',s:'婚紗主題農場',m:'哈比屋、粉紅教堂、羊駝小馬',h:'約 09:30–18:00',r:'景_琉璃仙境'},
+  {n:'極光森林',s:'夜景景觀餐廳',m:'星空帳篷、180 度夜景',h:'16:00–23:30（週一、二休）',r:'景_極光森林'},
+  {n:'雲河星空',s:'夜景景觀餐廳',m:'玻璃天空步道、高空鞦韆',h:'14:00–22:00（週二休）',r:'景_雲河星空景觀餐廳'},
+  {n:'藤山步道',s:'步道',m:'平緩好走，4–5 月油桐花',h:'24 小時（建議白天）',r:'景_藤山步道'},
+  {n:'員林蜀葵花季',s:'花季 · 季節限定',m:'比人高的蜀葵花海',h:'每年 3–4 月',r:'景_員林蜀葵花季'},
+  {n:'百果山溜滑梯',s:'親子 · 戶外',m:'超長彩虹溜滑梯、共融遊具',h:'假日停車位少',r:'景_百果山溜滑梯'},
+  {n:'靜修鐵道文化園區',s:'校園彩繪',m:'火車塗鴉與 3D 彩繪',h:'僅週末開放',r:'景_靜修鐵道文化園區'},
+  {n:'百果山探索樂園',s:'恐龍樂園',m:'擬真恐龍、沙坑、遊園車',h:'2024-09-01 起暫停',r:'景_百果山探索樂園',x:'暫停營業'},
+  {n:'KOKOMO 私房惑櫃',s:'貨櫃屋餐廳',m:'彩色貨櫃、戲水池',h:'依 R1 暫停',r:'景_KOKOMO私房惑櫃',x:'暫停營業'},
+];
+const FOODS=[
+  {n:'寶斗肉圓',s:'肉圓',m:'低溫油炸肉圓、綜合湯 25 元',h:'週三、四 11:00–17:00',r:'食_寶斗肉圓'},
+  {n:'正宗員林肉圓',s:'肉圓 · 百年老店',m:'Q 皮、肉塊筍丁、自製辣醬',h:'10:00–17:00（週三休）',r:'食_正宗員林肉圓'},
+  {n:'肉圓劉東山店',s:'肉圓',m:'皮 Q、筍丁脆',h:'11:00–20:00（週四、五休）',r:'食_肉圓劉東山店'},
+  {n:'東門賴家碗粿',s:'碗粿 · 第一市場',m:'芋蔥碗粿、肉粽',h:'07:00–14:30（早去）',r:'食_東門賴家碗粿'},
+  {n:'榕米糕',s:'米糕',m:'米糕、薑絲肉燥湯',h:'15:00–20:00',r:'食_榕米糕'},
+  {n:'員林北門肉粽',s:'肉粽 · 三代',m:'水煮粽，當天現包',h:'09:00–20:30',r:'食_員林北門肉粽'},
+  {n:'百果山炸粿',s:'炸物 · 50 年',m:'蚵嗲、期間限定蒜條',h:'07:00–19:00（週一休）',r:'食_百果山炸粿'},
+  {n:'王爺宮後炸粿蚵',s:'炸物 · 第一市場',m:'炸粿、蚵嗲、甜糯米',h:'08:00–19:30（週二休）',r:'食_王爺宮後炸粿蚵'},
+  {n:'火雲掌伯豆標',s:'古早味煎餅',m:'只賣高麗菜、紅豆兩種',h:'06:00–11:00、13:30–17:00',r:'食_火雲掌伯豆標'},
+  {n:'黃家鱟殼炒蚵仔麵',s:'炒麵',m:'鱟殼炒麵，50 元起',h:'11:00–19:00（週日休）',r:'食_黃家鱟殼炒蚵仔麵'},
+  {n:'阿華爌肉飯切仔麵',s:'飯麵 · 早午',m:'切仔麵、白切肉飯',h:'06:30–12:40（週日休）',r:'食_阿華爌肉飯切仔麵'},
+  {n:'阿成梅干扣肉',s:'自助夾菜',m:'梅干扣肉飯，一桌不到百元',h:'11:00–02:00（週日休）',r:'食_阿成梅干扣肉'},
+  {n:'魚滿堂排骨酥麵',s:'麵',m:'排骨酥麵，百元有找',h:'09:00–22:00（週二休）',r:'食_魚滿堂排骨酥麵'},
+  {n:'橋頭麵店',s:'古早味麵店',m:'乾麵、麻醬麵',h:'11:00 起賣完為止',r:'食_橋頭麵店'},
+  {n:'夢幻三家',s:'飯 · 火車站周邊',m:'黃金排骨飯',h:'10:40–20:00',r:'食_夢幻三家員林小吃店'},
+  {n:'員林華成水煎包',s:'早餐',m:'老麵高麗菜水煎包',h:'05:30–17:30（週日到 11:00）',r:'食_員林華成水煎包'},
+  {n:'和平早餐烤蛋餅',s:'早餐 · 深夜',m:'烤蛋餅、燒餅油條',h:'02:30–10:00（週一休）',r:'食_和平早餐烤蛋餅'},
+  {n:'姊妹飯糰',s:'早餐',m:'份量大的飯糰',h:'06:00–12:00（2018）',r:'食_姊妹飯糰'},
+  {n:'龍燈夜市',s:'夜市',m:'大魷魚、鴨肉羹、粉圓',h:'週二五六日 17:00–23:00',r:'食_龍燈夜市'},
+  {n:'員林小胖沙威瑪',s:'點心',m:'烤麵包雞肉沙威瑪',h:'15:00–19:00',r:'食_員林小胖沙威瑪'},
+  {n:'新生路圓仔冰',s:'冰品',m:'古早味八寶冰',h:'08:00–22:00（2018）',r:'食_新生路圓仔冰'},
+  {n:'番薯市八寶圓仔冰',s:'冰品',m:'花生冰、燒麻糬',h:'12:00–23:00（2018）',r:'食_番薯市八寶圓仔冰'},
+  {n:'早上享! Joyous',s:'早午餐 · 單車主題',m:'豬排堡 100、牛肉排飯 150',h:'週一休',r:'食_早上享Joyous'},
+  {n:'啾啾咖啡',s:'早午餐 · 侘寂和室',m:'可頌、厚片、莫忘鯛魚燒',h:'09:00–18:00',r:'食_啾啾咖啡'},
+  {n:'巴特手作晨食',s:'早午餐',m:'彩色起司蛋餅、熔岩堡',h:'06:30–14:00',r:'食_巴特手作晨食員林店'},
+  {n:'Attic 小閣樓',s:'老宅餐廳 · 寵物友善',m:'排餐、義大利麵、火鍋',h:'08:30–21:00',r:'食_Attic小閣樓'},
+  {n:'黑竹園雞腳凍',s:'伴手禮 · 一甲子',m:'去骨滷製雞腳凍',h:'07:00–22:00',r:'食_黑竹園雞腳凍'},
+];
+const IMPORTED=['R1','R2','R3','R4','R5','R6','R7','R8','R12','R13','R14','R15','R16','R17','R18','R19','R20'];
+const REFS={
+  R1:{t:'【2025員林景點一日遊】15個超夯員林景點推薦，員林親子景點、觀光工廠、室內景點懶人包！',u:'https://gofunit.com/員林景點/',m:'好好玩 FUNIT · 最後更新 2025-12-21',s:'15 個員林景點的一日遊整理，涵蓋公園、步道、古蹟、親子、美食與咖啡廳。',c:'蜀葵花田、藤山步道、琉璃仙境、興賢書院、警察故事館、極光森林、衡文宮',cat:'raw/attractions',tp:['景點','親子家庭'],w:'標示百果山、KOKOMO 暫停營業'},
+  R2:{t:'彰化2026【員林景點】精選一日遊建議與熱門景點都整理好了',u:'https://bunnyann.tw/yuanlin-attractions2026/',m:'小兔小安*旅遊札記 · 2026-08-21',s:'員林一日遊懶人包，介紹拍照與夜景景點，附美食、住宿與行程順序。',c:'百果山溜滑梯、琉璃仙境、警察故事館、極光森林、雲河星空、龍燈夜市',cat:'raw/attractions',tp:['景點','一日路線'],w:'含聯盟行銷連結'},
+  R3:{t:'彰化｜員林旅遊攻略：6個必去的網美景點，從恐龍樂園到玻璃屋咖啡館',u:'https://travel.yam.com/article/130974',m:'輕旅行 · 輕旅行_冰冰 · 最後更新 2023-06-15',s:'6 個員林網美景點，每處附地址、電話、營業時間與評分。',c:'百果山探索樂園、極光森林、KOKOMO、雲河星空、琉璃仙境、有片森林',cat:'raw/attractions',tp:['景點','IG 打卡族']},
+  R4:{t:'員林絕美7秘境全攻略！恐龍樂園到夜空騎鞦韆，浪漫旅拍新體驗',u:'https://n.yam.com/Article/20231204224504',m:'蕃新聞 · 輕旅行・冰冰 · 2023-12-04',s:'員林親子與網美景點彙整，另提到手拉坏體驗與透明空氣。',c:'百果山探索樂園、極光森林、KOKOMO、雲河星空、琉璃仙境、警察故事館',cat:'raw/attractions',tp:['景點','IG 打卡族'],w:'雲河星空所在地與 R3 不同'},
+  R5:{t:'彰化員林打卡景點大公開！極光森林、琉璃仙境、文青洗衣店',u:'https://www.beauty321.com/post/27581',m:'BEAUTY美人圈 · 編輯團 · 2019-10-03',s:'以 Instagram 貼文整理的員林拍照點，包含自助洗衣店與甜品店。',c:'極光森林、洗室 Merry Room、琉璃仙境、右舍咖啡、無窮想想飲木耳露',cat:'raw/attractions',tp:['IG 打卡族'],w:'2019 年資料'},
+  R6:{t:'「明治製糖員林驛」 藏身員林火車站附近巷弄',u:'https://news.pts.org.tw/article/453425',m:'公視新聞網 · 邱植培 · 2019-11-06',s:'火車站後方的日治時期木造建築，以及文化資產審議進度。',c:'明治製糖員林驛',cat:'raw/attractions',tp:['景點'],w:'2019 年新聞'},
+  R7:{t:'員林一日遊｜騎YouBike微笑單車玩員林',u:'https://travel.yam.com/article/105751',m:'輕旅行 · Nana愛旅行札記 · 最後更新 2018-05-14',s:'從火車站租單車，串連古蹟、公園、小吃與文創園區，附站點與路線。',c:'警察故事館、員林公園、興賢書院、琉璃仙境、龍燈公園、B12 文創特區',cat:'raw/attractions',tp:['景點','一日路線'],w:'單車系統可能已更換'},
+  R8:{t:'台鐵啟動員林火車站周邊都更招商 打造車站商業新地標',u:'https://money.udn.com/money/amp/story/5621/8882149',m:'經濟日報 · 住展雜誌 · 2025-07-18',s:'台鐵招商開發火車站周邊約 2.7 公頃土地，規劃商場、影城、辦公與商旅。',c:'員林火車站周邊都市更新',cat:'raw/attractions',tp:['景點']},
+  R9:{t:'彰化｜百果山探索樂園 台版侏儸紀恐龍主題樂園 一票玩到底',u:'https://travel.yam.com/article/118448',m:'輕旅行 · 企鵝麻 · 最後更新 2020-04-21',s:'恐龍主題樂園的設施、門票與營業時間，建議預留三到四小時。',c:'考古沙坑、旋轉恐龍、軌道列車、氣墊城堡、球池',cat:'raw/attractions',tp:['親子家庭'],w:'R1 標示暫停營業'},
+  R10:{t:'彰化｜百果山探索樂園：恐龍主題樂園，宛如走進侏儸紀公園！',u:'https://travel.yam.com/article/125238',m:'輕旅行 · 寶小銘 · 最後更新 2021-09-22',s:'親子遊記，介紹仿真恐龍、恐龍巴士、玩沙與氣墊遊戲區。',c:'旋轉恐龍、大金剛、恐龍巴士、遊園車、玩沙區',cat:'raw/attractions',tp:['親子家庭'],w:'疫情前照片・含 KKday 推薦'},
+  R11:{t:'快tag男友！全台11家超浪漫夜景餐廳',u:'https://supertaste.tvbs.com.tw/travel/319300',m:'食尚玩家 · 食尚編輯部 · 約 2019 年',s:'全台夜景餐廳清單，員林入選的是半山腰、有星空帳篷座位的極光森林。',c:'極光森林（員林），其餘 10 家在外縣市',cat:'raw/attractions',tp:['夜貓子','景點'],w:'只有 1 家在員林'},
+  R12:{t:'彰化員林美食TOP10 Threads狂推火雲掌伯豆標煎餅 活化石炒麵',u:'https://www.hk01.com/旅遊/60355581/彰化員林美食top10-threads狂推火雲掌伯豆標煎餅-活化石炒麵',m:'香港01 · 輕旅行授權轉載 · 2026-08-24',s:'網友推薦的員林小吃 TOP10，每家附評分、地址與營業時間，是最新的一份清單。',c:'肉圓劉東山店、火雲掌伯豆標、員林北門肉粽、榕米糕、阿成梅干扣肉、華成水煎包',cat:'raw/food',tp:['美食','學生小資']},
+  R13:{t:'彰化｜員林美食懶人包！10大在地必吃小吃清單',u:'https://travel.yam.com/article/130572',m:'輕旅行 · Kiwi 樂活食旅 · 最後更新 2023-06-05',s:'火車站周邊 10 家在地小吃，從早餐、午餐到宵夜。',c:'阿華爌肉飯、黃家鱟殼炒蚵仔麵、和平早餐烤蛋餅、魚滿堂排骨酥麵、東門賴家碗粿',cat:'raw/food',tp:['美食','夜貓子']},
+  R14:{t:'彰化｜寶斗肉圓：員林銅板美食，在地人從小吃到大',u:'https://travel.yam.com/article/133802',m:'輕旅行 · Nana · 最後更新 2024-12-18',s:'光明街肉圓老店的吃法、湯品價格與排隊情形。',c:'寶斗肉圓',cat:'raw/food',tp:['美食','學生小資']},
+  R15:{t:'2026【員林龍燈夜市】一星期開四天的夜市',u:'https://bunnyann.tw/dragon-lantern2026/',m:'小兔小安*旅遊札記 · 2026-10-15',s:'每週開四天的龍燈夜市，必吃攤位、價格帶與交通停車。',c:'萬里香烤肉、鴻家黑輪關東煮、生炒鴨肉羹、QQ古早味粉圓、東山鴨頭',cat:'raw/food',tp:['美食','夜貓子'],w:'含聯盟行銷連結'},
+  R16:{t:'彰化早午餐推薦（特輯）',u:'https://travel.yam.com/topic/319',m:'輕旅行 · 收錄 2020–2023 文章',s:'彰化早午餐特輯，其中 3 家在員林。',c:'Joyous 單車主題餐廳、啾啾咖啡、巴特手作晨食員林店',cat:'raw/food',tp:['美食','咖啡廳'],w:'其餘店家在花壇、大村'},
+  R17:{t:'彰化│精選超人氣必買彰化伴手禮名單！',u:'https://travel.yam.com/article/120469',m:'輕旅行 · Nana愛旅行札記 · 最後更新 2020-09-07',s:'彰化縣伴手禮清單，員林入選的是黑竹園雞腳凍。',c:'黑竹園雞腳凍（員林），其餘多在鹿港、彰化市',cat:'raw/food',tp:['美食'],w:'大多數店家不在員林'},
+  R18:{t:'員林咖啡廳推薦！5間逃離城市喧囂的好店',u:'https://www.marieclaire.com.tw/lifestyle/taste/78776',m:'美麗佳人 · 編輯部 · 最後更新 2024-04-16',s:'5 間員林咖啡廳；勤易來即原 NOV.Cafe，Subi 與日佐甜室同址。',c:'漬果 succade、Subi coffee&bakery、勤易來 Kafe In Life、有片森林、小街咖啡',cat:'raw/food',tp:['咖啡廳']},
+  R19:{t:'彰化｜漬果Succade：右舍咖啡新品牌！蜜餞甜點超驚豔',u:'https://travel.yam.com/article/131393',m:'輕旅行 · 算命的說我很愛玩 · 最後更新 2023-07-26',s:'右舍咖啡的新品牌，把員林蜜餞融入甜點，店面是日式老屋。',c:'漬果 Succade',cat:'raw/food',tp:['咖啡廳','甜點']},
+  R20:{t:'彰化｜員林咖啡館推薦，網美打卡熱點，有片森林咖啡館',u:'https://travel.yam.com/article/117918',m:'輕旅行 · Kiwi樂活食旅 · 最後更新 2023-06-11',s:'有片森林的空間、菜單與招牌蛋糕，並建議先訂位。',c:'有片森林（可補充 wiki 店家頁）',cat:'raw/food',tp:['咖啡廳','IG 打卡族']},
+  R21:{t:'【新開店】沒預約吃不到！彰化「日式咖啡廳」打卡禪風造景',u:'https://supertaste.tvbs.com.tw/food/335145',m:'食尚玩家 · 張庭瑄 · 約 2022 年初',s:'透明空氣的侘寂風空間、預約制與限量千層。',c:'透明空氣',cat:'raw/food',tp:['咖啡廳','出發前提醒'],w:'地址與 wiki 不同'},
+  R22:{t:'石原省太郎（員林店）店家資訊卡',u:'https://supertaste.tvbs.com.tw/infocard/13406',m:'食尚玩家 · 頁面未標示日期',s:'地址、電話與營業時間的店家資訊卡。',c:'石原省太郎員林店',cat:'raw/food',tp:['甜點','出發前提醒']},
+  R23:{t:'彰化員林｜石原省太郎員林店。學生最愛10元泡芙！',u:'https://travel.yam.com/article/110414',m:'輕旅行 · Nana愛旅行札記 · 最後更新 2018-12-28',s:'泡芙以外多項品項與價格，並提到每日限量、傍晚前可能售完。',c:'泡芙、棒棒泡芙、戚風蛋糕、蛋糕捲、米布丁',cat:'raw/food',tp:['甜點','學生小資'],w:'價格需再查證'},
+};
+
+/* ===== 產生咖啡廳小卡、文獻卡片、預留頁文獻清單 ===== */
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const LISTS={cafe:CAFES,place:PLACES,food:FOODS};
+document.querySelectorAll('[data-list]').forEach(box=>{
+  const [k,range]=box.dataset.list.split(':'); const [a,b]=range.split('-').map(Number);
+  box.innerHTML=LISTS[k].slice(a,b).map(x=>`<div class="mcard${x.x?' paused':''}"><span class="tag">${esc(x.s)}</span>${x.x?`<span class="xb">${esc(x.x)}</span>`:''}<h3>${esc(x.n)}</h3><div class="must">${esc(x.m)}</div><div class="hrs">${esc(x.h)}</div><div class="src">[[${esc(x.r)}]]</div></div>`).join('')+'<div class="mcard slot"><span>＋</span><small>預留・新咖啡廳</small></div>'.repeat(+box.dataset.slots||0);
+});
+document.querySelectorAll('[data-cards]').forEach(box=>{
+  box.innerHTML=box.dataset.cards.split(',').map(id=>{
+    if(id==='slot') return '<div class="ref slot"><span>＋</span><p>預留・新文獻</p></div>';
+    const r=REFS[id];
+    return `<div class="ref" id="${id}"><div class="head"><span class="id">${id}</span><a href="${esc(r.u)}" target="_blank" rel="noopener">${esc(r.t)}</a></div>
+      <div class="meta">${esc(r.m)}</div><p class="sum">${esc(r.s)}</p><p class="cov"><b>涵蓋</b>${esc(r.c)}</p>
+      <div class="tags">${IMPORTED.includes(id)?'<span class="done">✓ 已導入 wiki</span>':''}<span class="cat">${r.cat}</span>${r.tp.map(t=>`<span>${esc(t)}</span>`).join('')}${r.w?`<span class="warn">${esc(r.w)}</span>`:''}</div></div>`;
+  }).join('');
+});
+document.querySelectorAll('[data-refs]').forEach(box=>{
+  box.innerHTML=box.dataset.refs.split(',').map(id=>`<button data-ref="${id}"><b>${id}</b><span>${esc(REFS[id].t)}</span></button>`).join('');
+});
+
+/* ===== 導覽 ===== */
+(function(){
+  const deck=document.getElementById('deck');
+  const slides=[...document.querySelectorAll('.slide')];
+  const topicOf=k=>slides[k].dataset.topic;
+  const firstOf=t=>slides.findIndex(s=>s.dataset.topic===t);
+  const HOME=firstOf('home');
+  const prog=document.getElementById('progress');
+  const notes=document.getElementById('notes'),notesText=document.getElementById('notesText');
+  let i=Math.max(0,Math.min(slides.length-1,(parseInt(location.hash.slice(1))||1)-1));
+
+  slides.forEach(s=>{
+    const t=s.dataset.topic; if(t==='cover'||t==='home')return;
+    const group=slides.filter(x=>x.dataset.topic===t);
+    const b=s.querySelector('.foot b');
+    if(b) b.textContent=s.dataset.title+' · '+(group.indexOf(s)+1)+' / '+group.length;
+  });
+  function fit(){const s=Math.min(innerWidth/1600,innerHeight/900)*0.96;deck.style.transform='translate(-50%,-50%) scale('+s+')';}
+  function show(n){
+    i=Math.max(0,Math.min(slides.length-1,n));
+    slides.forEach((el,k)=>el.classList.toggle('active',k===i));
+    const group=slides.filter(x=>x.dataset.topic===topicOf(i));
+    prog.style.width=((group.indexOf(slides[i])+1)/group.length*100)+'%';
+    const a=slides[i].querySelector('aside.notes');notesText.textContent=a?a.textContent:'';
+    try{history.replaceState(null,'','#'+(i+1));}catch(e){}
+  }
+  function next(){
+    const t=topicOf(i);
+    if(t==='cover') return show(HOME);
+    if(t==='home') return show(HOME+1);
+    if(i+1<slides.length && topicOf(i+1)===t) return show(i+1);
+    show(HOME);
+  }
+  function prev(){
+    const t=topicOf(i);
+    if(t==='cover') return;
+    if(t==='home') return show(0);
+    if(topicOf(i-1)===t) return show(i-1);
+    show(HOME);
+  }
+  function goRef(id){
+    const el=document.getElementById(id); if(!el)return;
+    show(slides.indexOf(el.closest('.slide')));
+    el.classList.add('flash'); setTimeout(()=>el.classList.remove('flash'),1800);
+  }
+  document.addEventListener('click',e=>{
+    const g=e.target.closest('[data-go]'); if(g){g.dataset.go==='home'?show(HOME):show(firstOf(g.dataset.go));return;}
+    const r=e.target.closest('[data-ref]'); if(r){goRef(r.dataset.ref);}
+  });
+  document.getElementById('bPrev').onclick=prev;
+  document.getElementById('bNext').onclick=next;
+  document.getElementById('bHome').onclick=()=>show(HOME);
+  addEventListener('resize',fit);
+  addEventListener('keydown',e=>{
+    if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();next();}
+    else if(['ArrowLeft','PageUp','Backspace'].includes(e.key)){e.preventDefault();prev();}
+    else if(e.key==='h'||e.key==='H'||e.key==='Escape'||e.key==='Home')show(HOME);
+    else if(e.key==='f'||e.key==='F'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}
+    else if(e.key==='s'||e.key==='S'){notes.classList.toggle('show');}
+  });
+  let x0=null;
+  addEventListener('touchstart',e=>{x0=e.touches[0].clientX},{passive:true});
+  addEventListener('touchend',e=>{if(x0===null)return;const d=e.changedTouches[0].clientX-x0;if(Math.abs(d)>40)(d<0?next:prev)();x0=null;});
+  addEventListener('DOMContentLoaded',()=>{
+    if(window.renderMathInElement){
+      renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false,ignoredTags:['script','style','aside']});
+    }
+  });
+  fit();show(i);
+})();
+</script>
+</body>
+</html>

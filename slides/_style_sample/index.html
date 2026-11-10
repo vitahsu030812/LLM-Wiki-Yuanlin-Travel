@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>員林其實很年輕｜風格樣張</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@300;400;700&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<style>
+/* ============ 風格設定：文青手帳 × 日式極簡（無印風） ============ */
+:root{
+  --paper:#F5F2EB;      /* 米白紙 */
+  --paper-2:#ECE6DA;    /* 淺牛皮 */
+  --kraft:#C8B796;      /* 牛皮紙 / 紙膠帶 */
+  --ink:#34322E;        /* 墨色 */
+  --ink-2:#6F6A61;      /* 淡墨 */
+  --ink-3:#A39D92;      /* 鉛筆灰 */
+  --line:#D9D2C4;       /* 細線 */
+  --accent:#8E3B32;     /* 低彩度磚紅 */
+  --accent-soft:#EBDDD6;
+  --hand:"LXGW WenKai TC","Kaiti TC","DFKai-SB","標楷體",serif;
+  --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#E4DED2;overflow:hidden}
+body{font-family:var(--sans);color:var(--ink);-webkit-font-smoothing:antialiased}
+
+/* 16:9 舞台，等比縮放 */
+#stage{position:fixed;inset:0}
+#deck{width:1600px;height:900px;position:absolute;left:50%;top:50%;transform-origin:center center}
+.slide{
+  position:absolute;inset:0;padding:96px 120px 110px;
+  background:
+    radial-gradient(circle, rgba(52,50,46,.09) 1.1px, transparent 1.3px) 0 0/28px 28px,
+    var(--paper);
+  opacity:0;visibility:hidden;transition:opacity .45s ease;
+  box-shadow:0 20px 60px rgba(60,50,30,.12);
+  display:flex;flex-direction:column;
+}
+.slide.active{opacity:1;visibility:visible}
+.slide.plain{background:var(--paper)}
+
+/* 頁尾 */
+.foot{position:absolute;left:120px;right:120px;bottom:48px;display:flex;justify-content:space-between;
+  font-size:15px;letter-spacing:.18em;color:var(--ink-3);border-top:1px solid var(--line);padding-top:14px}
+.foot b{font-weight:400;color:var(--ink-2)}
+
+/* 字級 */
+.kicker{font-size:16px;letter-spacing:.32em;color:var(--ink-3);text-transform:uppercase}
+h1,h2{font-family:var(--hand);font-weight:400;color:var(--ink)}
+h2{font-size:58px;line-height:1.25;margin:14px 0 8px}
+.lead{font-size:24px;line-height:1.8;color:var(--ink-2);font-weight:300}
+.src{font-size:14px;color:var(--ink-3);letter-spacing:.04em}
+.mark{background:linear-gradient(transparent 62%, var(--accent-soft) 62%);padding:0 .12em}
+
+/* 手繪底線 */
+.brush{display:block;width:100%;height:18px;color:var(--accent)}
+
+/* 紙膠帶 */
+.tape{position:absolute;width:120px;height:30px;background:rgba(200,183,150,.55);
+  top:-14px;left:50%;transform:translateX(-50%) rotate(-3deg);
+  border-left:1px dashed rgba(255,255,255,.5);border-right:1px dashed rgba(255,255,255,.5)}
+
+/* ---------- 封面 ---------- */
+.cover{justify-content:center}
+.cover .vline{position:absolute;left:120px;top:96px;bottom:110px;width:1px;background:var(--line)}
+.cover .inner{padding-left:64px}
+.cover h1{font-size:132px;line-height:1.1;letter-spacing:.04em;margin:28px 0 6px}
+.cover h1 .brush{width:640px;height:26px;margin-top:-6px}
+.cover .lead{font-size:28px;margin-top:30px}
+.stamp{position:absolute;right:150px;top:110px;width:112px;height:112px;border:1.5px solid var(--accent);
+  border-radius:50%;display:grid;place-items:center;color:var(--accent);font-family:var(--hand);
+  font-size:22px;line-height:1.2;text-align:center;transform:rotate(-8deg);opacity:.85}
+.mascot{position:absolute;filter:saturate(.8)}
+.cover .mascot{right:170px;bottom:120px;width:250px}
+
+/* ---------- 章節 ---------- */
+.chapter{justify-content:center;align-items:flex-start}
+.chapter .num{font-family:var(--sans);font-weight:300;font-size:180px;line-height:1;color:var(--kraft);letter-spacing:-.02em}
+.chapter h2{font-size:84px;margin-top:10px}
+.chapter .mascot{right:200px;bottom:150px;width:190px}
+
+/* ---------- 五格分類 ---------- */
+.grid5{display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin-top:54px;border-top:1px solid var(--ink);flex:1}
+.cell{padding:30px 26px 0;border-right:1px solid var(--line);display:flex;flex-direction:column}
+.cell:last-child{border-right:none}
+.cell .n{font-size:15px;letter-spacing:.2em;color:var(--ink-3)}
+.cell h3{font-family:var(--hand);font-weight:400;font-size:32px;line-height:1.35;margin:16px 0 18px;min-height:88px}
+.cell p{font-size:18px;line-height:1.9;color:var(--ink-2);font-weight:300}
+.cell .count{margin-top:auto;padding-bottom:20px;font-size:15px;color:var(--ink-3)}
+.cell .count em{font-style:normal;font-size:56px;font-weight:300;color:var(--accent);margin-right:6px;font-family:var(--sans)}
+
+/* ---------- 店家卡片 ---------- */
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:48px;margin-top:64px}
+.card{position:relative;background:#FBF9F4;border:1px solid var(--line);padding:46px 36px 30px;min-height:430px;display:flex;flex-direction:column}
+.card:nth-child(2) .tape{transform:translateX(-50%) rotate(2deg)}
+.card .tag{font-size:14px;letter-spacing:.18em;color:var(--accent)}
+.card h3{font-family:var(--hand);font-weight:400;font-size:40px;margin:12px 0 20px}
+.card dl{display:grid;grid-template-columns:78px 1fr;row-gap:14px;font-size:18px;line-height:1.6}
+.card dt{color:var(--ink-3);font-size:15px;letter-spacing:.12em;padding-top:2px}
+.card dd{color:var(--ink);font-weight:400}
+.card .src{margin-top:auto;padding-top:20px;border-top:1px dashed var(--line)}
+
+/* ---------- 表格 ---------- */
+table{width:100%;border-collapse:collapse;margin-top:48px;font-size:21px}
+th{font-weight:400;font-size:15px;letter-spacing:.2em;color:var(--ink-3);text-align:left;padding:0 18px 14px;border-bottom:1px solid var(--ink)}
+td{padding:24px 18px;border-bottom:1px solid var(--line);vertical-align:top}
+td.name{font-family:var(--hand);font-size:28px;width:26%}
+td.price{color:var(--accent);font-size:24px;white-space:nowrap}
+td.src{font-size:14px}
+
+/* ---------- 時間軸 ---------- */
+.timeline{position:relative;margin:70px 0 0 0;display:grid;grid-template-columns:repeat(4,1fr);gap:28px;padding-right:200px}
+.timeline:before{content:"";position:absolute;left:0;right:200px;top:15px;border-top:1px dashed var(--ink-3)}
+.stop{position:relative;padding-top:52px}
+.stop:before{content:"";position:absolute;left:0;top:7px;width:17px;height:17px;border-radius:50%;background:var(--paper);border:1.5px solid var(--accent)}
+.stop .t{font-size:30px;font-weight:300;letter-spacing:.04em}
+.stop h3{font-family:var(--hand);font-weight:400;font-size:30px;margin:10px 0 10px;line-height:1.3}
+.stop p{font-size:18px;color:var(--ink-2);line-height:1.8;font-weight:300}
+.stop .src{margin-top:12px}
+.route .mascot{right:110px;bottom:120px;width:170px}
+
+/* ---------- 提示框 ---------- */
+.gap{margin-top:auto;border-left:3px solid var(--kraft);background:var(--paper-2);padding:16px 24px;font-size:18px;color:var(--ink-2);max-width:1060px}
+.gap b{color:var(--ink);font-weight:500}
+
+/* ---------- LaTeX ---------- */
+.math{margin:56px 0 30px;padding:40px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-size:34px;color:var(--ink)}
+.katex{color:var(--ink)}
+
+/* ---------- 文獻 ---------- */
+.refs{margin-top:46px;list-style:none;border-top:1px solid var(--ink)}
+.refs li{display:grid;grid-template-columns:90px 1fr 220px 160px;gap:20px;padding:24px 0;border-bottom:1px solid var(--line);font-size:20px;align-items:baseline}
+.refs .id{color:var(--accent);letter-spacing:.1em}
+.refs a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--kraft)}
+.refs a:hover{color:var(--accent);border-color:var(--accent)}
+.refs .meta{font-size:15px;color:var(--ink-3)}
+.refs li.ghost{color:var(--ink-3)}
+
+/* ---------- 結語 ---------- */
+.ending{justify-content:center;align-items:center;text-align:center}
+.ending h2{font-size:96px}
+.ending .brush{width:520px;margin:0 auto}
+
+/* ---------- 介面 ---------- */
+#progress{position:fixed;left:0;bottom:0;height:2px;background:var(--accent);transition:width .3s ease;z-index:5}
+#notes{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);width:min(900px,92vw);
+  background:rgba(52,50,46,.92);color:#F5F2EB;padding:18px 24px;border-radius:4px;font-size:16px;line-height:1.8;
+  display:none;z-index:6}
+#notes.show{display:block}
+#notes small{display:block;opacity:.55;font-size:12px;letter-spacing:.2em;margin-bottom:4px}
+#hint{position:fixed;right:18px;top:14px;font-size:12px;color:#8a8478;letter-spacing:.1em;z-index:6}
+aside.notes{display:none}
+
+/* ---------- 列印：一頁一張 ---------- */
+@media print{
+  @page{size:1600px 900px;margin:0}
+  html,body{overflow:visible;background:none}
+  #stage{position:static;display:block}
+  #deck{transform:none!important;position:static;width:auto;height:auto}
+  .slide{position:relative;opacity:1;visibility:visible;width:1600px;height:900px;page-break-after:always;box-shadow:none}
+  #progress,#notes,#hint{display:none}
+}
+</style>
+</head>
+<body>
+<div id="stage"><div id="deck">
+
+<!-- 1 封面 -->
+<section class="slide cover plain">
+  <div class="vline"></div>
+  <div class="stamp">員林<br>手帳</div>
+  <div class="inner">
+    <div class="kicker">Yuanlin Notes · 2026.11 · Style Sample</div>
+    <h1>員林其實很年輕
+      <svg class="brush" viewBox="0 0 640 26" preserveAspectRatio="none" aria-hidden="true"><path d="M4 16 C 90 6, 180 22, 280 13 S 470 6, 636 14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" opacity=".75"/></svg>
+    </h1>
+    <p class="lead">從 22 家咖啡與甜點，重新認識員林</p>
+  </div>
+  <img class="mascot" src="img/mascot_wave.png" alt="">
+  <div class="foot"><span>員林好吃好玩 Wiki</span><b>01</b></div>
+  <aside class="notes">開場：很多人對員林的印象停在「過路的小鎮」。今天用 wiki 裡整理的 22 家咖啡甜點，看看員林年輕的一面。</aside>
+</section>
+
+<!-- 2 章節 -->
+<section class="slide chapter">
+  <div class="num">01</div>
+  <h2>你印象中的員林？</h2>
+  <p class="lead">其實巷子裡，藏著一整座城市的下午茶。</p>
+  <img class="mascot" src="img/mascot_curious.png" alt="">
+  <div class="foot"><span>員林其實很年輕</span><b>02</b></div>
+  <aside class="notes">章節頁：先拋問題，讓聽眾想一下自己對員林的印象。</aside>
+</section>
+
+<!-- 3 五種風格 -->
+<section class="slide">
+  <div class="kicker">Five Styles</div>
+  <h2>五種風格，<span class="mark">一次收集</span></h2>
+  <div class="grid5">
+    <div class="cell"><span class="n">— 01</span><h3>日式美學<br>與庭園風</h3><p>枯寂風、預約制、京都抹茶。</p><div class="count"><em>2</em>家</div></div>
+    <div class="cell"><span class="n">— 02</span><h3>老宅風格<br>與文青咖啡</h3><p>玻璃屋老宅、巷弄老屋、深夜調酒。</p><div class="count"><em>5</em>家</div></div>
+    <div class="cell"><span class="n">— 03</span><h3>光感美學<br>與網美採光</h3><p>落地窗、自然光、精緻法式。</p><div class="count"><em>2</em>家</div></div>
+    <div class="cell"><span class="n">— 04</span><h3>特色單品<br>與質感自烘</h3><p>手沖單品、自家烘焙、貓店長。</p><div class="count"><em>6</em>家</div></div>
+    <div class="cell"><span class="n">— 05</span><h3>銅板小吃<br>與散步甜點</h3><p>10 元泡芙、鯛魚燒、酵母鬆餅。</p><div class="count"><em>7</em>家</div></div>
+  </div>
+  <div class="foot"><span>來源：[[主題_員林咖啡與下午茶甜點]]</span><b>03</b></div>
+  <aside class="notes">wiki 主題頁把 22 家店分成五類，數字加總正好 22。</aside>
+</section>
+
+<!-- 4 店家卡片 -->
+<section class="slide">
+  <div class="kicker">Must Visit</div>
+  <h2>三家，先存起來</h2>
+  <div class="cards">
+    <div class="card"><span class="tape"></span>
+      <span class="tag">日式枯寂風</span><h3>透明空氣</h3>
+      <dl><dt>必點</dt><dd>透明千層酥（每日限量 4–5 份）</dd><dt>時間</dt><dd>11:00–17:00</dd><dt>提醒</dt><dd>完全預約制</dd></dl>
+      <div class="src">[[食_透明空氣]]</div></div>
+    <div class="card"><span class="tape"></span>
+      <span class="tag">韓系玻璃屋</span><h3>右舍咖啡</h3>
+      <dl><dt>必點</dt><dd>抹茶塔、甘單抹茶卷</dd><dt>時間</dt><dd>09:00–21:30（全年無休）</dd><dt>位置</dt><dd>員林公園旁</dd></dl>
+      <div class="src">[[食_右舍咖啡]]</div></div>
+    <div class="card"><span class="tape"></span>
+      <span class="tag">落地窗採光</span><h3>有片森林</h3>
+      <dl><dt>必點</dt><dd>季節水果戚風蛋糕</dd><dt>時間</dt><dd>08:00–18:00</dd><dt>位置</dt><dd>員林大道三段</dd></dl>
+      <div class="src">[[食_有片森林]]</div></div>
+  </div>
+  <div class="foot"><span>員林其實很年輕</span><b>04</b></div>
+  <aside class="notes">店家卡片版型：紙膠帶貼在手帳上的感覺。每張卡片底下標 wiki 來源。</aside>
+</section>
+
+<!-- 5 表格 -->
+<section class="slide">
+  <div class="kicker">Pocket Money</div>
+  <h2>學生預算也能吃</h2>
+  <table>
+    <thead><tr><th>店家</th><th>必點</th><th>價格</th><th>營業時間</th><th>來源</th></tr></thead>
+    <tbody>
+      <tr><td class="name">石原省太郎</td><td>現灌爆漿泡芙</td><td class="price">10 元</td><td>14:30–19:00</td><td class="src">[[食_石原省太郎員林店]]</td></tr>
+      <tr><td class="name">莫忘鯛魚燒</td><td>奶油黑白配、珍珠卡士達</td><td class="price">—</td><td>12:00–18:30</td><td class="src">[[食_莫忘鯛魚燒]]</td></tr>
+      <tr><td class="name">庫洛瑪私房甜點</td><td>酵母鬆餅、手工冰品</td><td class="price">—</td><td>12:00–21:00</td><td class="src">[[食_庫洛瑪私房甜點]]</td></tr>
+      <tr><td class="name">所在 suō zài</td><td>經典原味舒芙蕾</td><td class="price">120 元</td><td>11:00–20:00</td><td class="src">[[食_所在_suo_zai]]</td></tr>
+    </tbody>
+  </table>
+  <div class="foot"><span>「—」：wiki 尚無價格資料</span><b>05</b></div>
+  <aside class="notes">表格版型：只有粗細兩種線，不用底色。wiki 沒有的價格用「—」表示。</aside>
+</section>
+
+<!-- 6 時間軸 -->
+<section class="slide route">
+  <div class="kicker">Afternoon Route</div>
+  <h2>一個下午的年輕路線</h2>
+  <div class="timeline">
+    <div class="stop"><div class="t">14:30</div><h3>石原省太郎</h3><p>開門就到，10 元泡芙暖身。</p><div class="src">[[食_石原省太郎員林店]]</div></div>
+    <div class="stop"><div class="t">15:30</div><h3>莫忘鯛魚燒</h3><p>現烤外酥內爆漿，邊走邊吃。</p><div class="src">[[食_莫忘鯛魚燒]]</div></div>
+    <div class="stop"><div class="t">17:00</div><h3>所在 suō zài</h3><p>郵局旁老宅，現做舒芙蕾。</p><div class="src">[[食_所在_suo_zai]]</div></div>
+    <div class="stop"><div class="t">19:00</div><h3>土丿匕木十豆寸</h3><p>浮圳巷老屋，咖啡調酒收尾。</p><div class="src">[[食_土丿匕木十豆寸_Cafe]]</div></div>
+  </div>
+  <div class="gap"><b>⚠️ wiki 尚無資料：</b>店家之間的距離與交通方式，見建議文獻。</div>
+  <img class="mascot" src="img/mascot_backpack.png" alt="">
+  <div class="foot"><span>員林其實很年輕</span><b>06</b></div>
+  <aside class="notes">時間只依 wiki 的營業時間安排；交通方式 wiki 還沒有，所以用提示框標出缺口。</aside>
+</section>
+
+<!-- 7 LaTeX -->
+<section class="slide">
+  <div class="kicker">Budget</div>
+  <h2>算一下：兩份甜點多少錢？</h2>
+  <div class="math">$$\text{甜點預算} = \underbrace{10}_{\text{泡芙}} + \underbrace{120}_{\text{舒芙蕾}} = 130\ \text{元}$$</div>
+  <p class="lead">行內公式也可以：每多一顆泡芙，預算增加 $\Delta = 10$ 元。</p>
+  <div class="gap"><b>⚠️ wiki 尚無資料：</b>鯛魚燒、鬆餅的價格。</div>
+  <div class="foot"><span>來源：[[食_石原省太郎員林店]]、[[食_所在_suo_zai]]</span><b>07</b></div>
+  <aside class="notes">LaTeX 示範頁：區塊公式與行內公式，都用 KaTeX 顯示。</aside>
+</section>
+
+<!-- 8 文獻 -->
+<section class="slide">
+  <div class="kicker">References</div>
+  <h2>建議文獻</h2>
+  <ul class="refs">
+    <li><span class="id">R1</span><a href="https://nanai.tw/yuanlin-dessert-cafe/" target="_blank" rel="noopener">員林甜點咖啡懶人包</a><span class="meta">Nana愛旅行札記</span><span class="meta">已在 wiki</span></li>
+    <li class="ghost"><span class="id">R2</span><span>（正式版：由網路搜尋列出，尚未納入 wiki 的資料）</span><span class="meta">來源網站</span><span class="meta">查詢日期</span></li>
+  </ul>
+  <p class="lead" style="margin-top:36px;font-size:20px">點擊標題在新分頁開啟。要納入 wiki，請跟 Agent 說「導入 R2」。</p>
+  <div class="foot"><span>員林其實很年輕</span><b>08</b></div>
+  <aside class="notes">文獻頁固定在最後。樣張只放目前 wiki 已有的來源當格式示範。</aside>
+</section>
+
+<!-- 9 結語 -->
+<section class="slide ending plain">
+  <h2>員林，比你想的還年輕。</h2>
+  <svg class="brush" viewBox="0 0 520 18" preserveAspectRatio="none" aria-hidden="true"><path d="M6 11 C 120 4, 260 16, 514 8" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" opacity=".7"/></svg>
+  <p class="lead" style="margin-top:28px">下個週末，帶著這本手帳出發。</p>
+  <div class="foot"><span>員林好吃好玩 Wiki</span><b>09</b></div>
+  <aside class="notes">結語。</aside>
+</section>
+
+</div></div>
+
+<div id="progress"></div>
+<div id="notes"><small>講者備註</small><div id="notesText"></div></div>
+<div id="hint">← → 翻頁 · F 全螢幕 · S 備註</div>
+
+<script>
+(function(){
+  const deck=document.getElementById('deck');
+  const slides=[...document.querySelectorAll('.slide')];
+  const prog=document.getElementById('progress');
+  const notes=document.getElementById('notes'),notesText=document.getElementById('notesText');
+  let i=Math.max(0,Math.min(slides.length-1,(parseInt(location.hash.slice(1))||1)-1));
+
+  function fit(){const s=Math.min(innerWidth/1600,innerHeight/900)*0.96;deck.style.transform='translate(-50%,-50%) scale('+s+')';}
+  function show(n){
+    i=Math.max(0,Math.min(slides.length-1,n));
+    slides.forEach((el,k)=>el.classList.toggle('active',k===i));
+    prog.style.width=((i+1)/slides.length*100)+'%';
+    const a=slides[i].querySelector('aside.notes');notesText.textContent=a?a.textContent:'';
+    try{history.replaceState(null,'','#'+(i+1));}catch(e){}
+  }
+  addEventListener('resize',fit);
+  addEventListener('keydown',e=>{
+    if(['ArrowRight','PageDown',' ','Enter'].includes(e.key)){e.preventDefault();show(i+1);}
+    else if(['ArrowLeft','PageUp','Backspace'].includes(e.key)){e.preventDefault();show(i-1);}
+    else if(e.key==='Home')show(0);
+    else if(e.key==='End')show(slides.length-1);
+    else if(e.key==='f'||e.key==='F'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}
+    else if(e.key==='s'||e.key==='S'){notes.classList.toggle('show');}
+  });
+  document.getElementById('stage').addEventListener('click',e=>{
+    if(e.target.closest('a'))return;
+    show(e.clientX>innerWidth/2?i+1:i-1);
+  });
+  let x0=null;
+  addEventListener('touchstart',e=>{x0=e.touches[0].clientX},{passive:true});
+  addEventListener('touchend',e=>{if(x0===null)return;const d=e.changedTouches[0].clientX-x0;if(Math.abs(d)>40)show(d<0?i+1:i-1);x0=null;});
+
+  addEventListener('DOMContentLoaded',()=>{
+    if(window.renderMathInElement){
+      renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false,ignoredTags:['script','style','aside']});
+    }
+  });
+  fit();show(i);
+})();
+</script>
+</body>
+</html>
